@@ -36,7 +36,7 @@ import {filterImageFromURL, deleteLocalFiles,getFilesInDirectory} from './util/u
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
-  app.get( "/filteredimage",async (req : Request, res:Response ) => {
+ app.get( "/filteredimage",async (req,res ) => {
     var param = req.query.image_url;
     if(param == undefined){
       res.status(401).send("Please provide the image_url");
