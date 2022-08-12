@@ -36,22 +36,23 @@ import {filterImageFromURL, deleteLocalFiles,getFilesInDirectory} from './util/u
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
- app.get( "/filteredimage",async (req,res ) => {
+ app.get( "/filteredimage",async (req : express.Request,res : express.Response ) => {
     var param = req.query.image_url;
     if(param == undefined){
-      res.status(401).send("Please provide the image_url");
+      res.status(400).send("Please provide the image_url");
     } 
-    
+    try{
     var result =  await filterImageFromURL(param);
     var images = [];
-    try{
-      images[0] = result.toString();
-      res.status(200).sendFile(result);
-      
-      
-    }finally{
+    images[0] = result.toString();
+    res.status(200).sendFile(result);  
+    }catch(error){
+        console.error("Error has occured while filtering the image"+error
+        );
+        res.status(500).send("Something went wrong.");
+    }
+    finally{
       getFilesInDirectory();
-      //deleteLocalFiles()
     }
     
    

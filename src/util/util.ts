@@ -12,8 +12,9 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     try {
       const photo = await Jimp.read(inputURL);
-      const outpath =
-        "/tmp/filtered." + Math.floor(Math.random() * 2000) + ".jpg";
+      const tempFolder:string = "/tmp/";
+      const outpath:string=
+        tempFolder+generateFilename();
       await photo
         .resize(256, 256) // resize
         .quality(60) // set JPEG quality
@@ -38,8 +39,12 @@ export async function deleteLocalFiles(files: Array<string>) {
   }
 }
 
+function generateFilename() : string {
+  let fileName : String = "filtered.";
+  return "filtered." +  Math.floor(Math.random() * 2000) + ".jpg"
+}
 
-export function getFilesInDirectory() {
+export function getFilesInDirectory() : void {
   console.log("\nFiles present in directory:");
   let files = fs.readdirSync(__dirname+"/tmp");
   files.forEach(file => {
